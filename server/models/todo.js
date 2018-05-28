@@ -17,8 +17,4 @@ var Todo = mongoose.model('Todo', {
     }
 });
 
-var newTask = new Todo({
-    text: ' New Item '
-});
-
 module.exports = {Todo};
