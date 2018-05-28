@@ -105,6 +105,17 @@ app.get('/users/me', autenticate, (req, res)=>{
     res.send(req.user);
 });
 
+app.post('/users/login', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+    User.findByCredentials(body.email, body.password).then((user)=>{
+        return user.generateAuthToken().then((token)=>{
+            res.header('x-auth', token).send(user);  //add custon auth header
+        });
+    }).catch((err)=>{
+        res.status(400).send('email/password combo does not exist');
+    });
+});
+
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
