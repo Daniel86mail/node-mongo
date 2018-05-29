@@ -4,18 +4,21 @@ const jwt = require('jsonwebtoken');
 const {Todo} = require('./../../models/todo');
 const {User} = require('./../../models/user');
 
+var userOneId = new ObjectID();
+var userTwoId = new ObjectID();
+
 const  todos = [{
     _id: new ObjectID(),
-    text: 'first'
+    text: 'first',
+    _creator: userOneId
 },{
     _id: new ObjectID(),
     text: 'second',
     completed: true,
-    completedAt: 333
+    completedAt: 333,
+    _creator: userTwoId
 }];
 
-var userOneId = new ObjectID();
-var userTwoId = new ObjectID();
 const users = [{
     _id: userOneId,
     email: 'daniel@ex.com',
@@ -28,6 +31,10 @@ const users = [{
     _id: userTwoId,
     email: 'other@ex.com',
     password: 'user2Pass',
+    tokens: [{
+        access: 'auth',
+        token: jwt.sign({_id: userTwoId, access: 'auth'}, 'abc123').toString()
+    }]
 }]
 
 const populateTodos = (done)=>{
