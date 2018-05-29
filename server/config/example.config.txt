@@ -1,0 +1,16 @@
+
+//You need to create a config.json file in this folder
+//set the params according to this example
+
+// {
+//     "test":{
+//         "port": 3000,
+//         "MONGODB_URI": "mongodb://localhost:27017/TodoAppTest",
+//         "JWT_SECRET" : "abc123sadasdasd"
+//     },
+//     "dev":{
+//         "port": 3000,
+//         "MONGODB_URI": "mongodb://localhost:27017/TodoApp",
+//         "JWT_SECRET" : "abc123asdsdssss"
+//     }
+// }
