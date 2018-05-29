@@ -110,7 +110,7 @@ describe('Server', () => {
                     return done(err);
                 }
                 Todo.findById(todos[1]._id.toHexString()).then((todo) => {
-                    expect(todo).toNotExist();
+                    expect(todo).toBeFalsy();
                     done();
                 }).catch((e) => done(e));
             });
@@ -152,7 +152,8 @@ describe('Server', () => {
             .expect((res)=>{
                 expect(res.body.todo.text).toBe(updatedData.text);
                 expect(res.body.todo.completed).toBeTruthy();
-                expect(res.body.todo.completedAt).toExist().toBeA('number');
+                expect(res.body.todo.completedAt).toBeTruthy();
+                expect(typeof res.body.todo.completedAt).toBe('number');
             })
             .end(done);
         });
@@ -170,7 +171,7 @@ describe('Server', () => {
             .expect((res)=>{
                 expect(res.body.todo.text).toBe(updatedData.text);
                 expect(res.body.todo.completed).toBeFalsy();
-                expect(res.body.todo.completedAt).toNotExist();
+                expect(res.body.todo.completedAt).toBeFalsy();
             })
             .end(done);
         });
@@ -219,15 +220,15 @@ describe('Server', () => {
             .expect(200)
             .expect((res)=>{
                 expect(res.body.email).toBe(newUser.email);
-                expect(res.body._id).toExist();
-                expect(res.header['x-auth']).toExist();
+                expect(res.body._id).toBeTruthy();
+                expect(res.header['x-auth']).toBeTruthy();
             })
             .end((err)=>{
                 if(err){
                     return done(err);
                 }
                 User.findOne({email: newUser.email}).then((user)=>{
-                    expect(user).toExist();
+                    expect(user).toBeTruthy();
                     done();
                 });
             });
@@ -267,14 +268,14 @@ describe('Server', () => {
             })
             .expect(200)
             .expect((res)=>{
-                expect(res.headers['x-auth']).toExist();
+                expect(res.headers['x-auth']).toBeTruthy();
             })
             .end((err, res)=>{
                 if(err)
                     done(err);
                 else{
                     User.findById(users[1]._id).then((user)=>{
-                        expect(user.tokens[1]).toInclude({
+                        expect(user.toObject().tokens[1]).toMatchObject({
                             access: 'auth',
                             token: res.headers['x-auth']
                         });
@@ -294,7 +295,7 @@ describe('Server', () => {
             })
             .expect(400)
             .expect((res)=>{
-                expect(res.headers['x-auth']).toNotExist();
+                expect(res.headers['x-auth']).toBeFalsy();
             })
             .end((err, res)=>{
                 if(err)
